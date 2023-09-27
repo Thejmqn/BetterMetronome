@@ -15,7 +15,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 
 export default function App() {
   const [timeSignature, setTimeSignature] = useState(4)
-  const [bpm, setBpm] = useState(60);
+  const [bpm, setBpm] = useState(112);
   const [beat, setBeat] = useState(1);
   const [measure, setMeasure] = useState(1);
   const [running, setRunning] = useState(false);
@@ -28,6 +28,9 @@ export default function App() {
   const downbeat = new Audio(audio1);
   const offbeat = new Audio(audio2);
   const [rows, setRows] = useState([]);
+  const [letters, setLetters] = useState([]);
+  const [buttonText, setButtonText] = useState("1");
+  const [buttonColor, setButtonColor] = useState("darkBlue");
 
   const darkTheme = createTheme({
     palette: {
@@ -38,18 +41,16 @@ export default function App() {
   useEffect(() => {
     const interval = setInterval(() => {
       if(running) {
-        setBeat(beat => beat + 1);
-        if(beat >= timeSignature) {
+        if(beat < timeSignature) {
+          setBeat(beat => beat + 1)
+          if(volume)
+            offbeat.play()
+        } 
+        else {
           setBeat(1)
           setMeasure(measure => measure + 1)
           if(volume)
             downbeat.play()
-        }
-        else {
-          offbeat.pause()
-          downbeat.pause()
-          if(volume)
-            offbeat.play()
         }
       }
     }, (60/bpm)*1000);
@@ -63,8 +64,33 @@ export default function App() {
       } 
     }
 
+    setButtonText(calculateButtonText)
+    setButtonColor(calculateButtonColor)
+
     return () => clearInterval(interval);
   }, [beat, measure, running, rows]);
+
+const calculateButtonText = () => {
+  if (beat == 1) {
+    for(let i = 0; i < letters.length; i++) {
+      if(measure == letters[i].measure)
+        return letters[i].value
+    }
+    return measure
+  }
+  return beat
+}
+
+const calculateButtonColor = () => {
+  if (beat == 1) {
+    for(let i = 0; i < letters.length; i++) {
+      if(measure == letters[i].measure)
+        return "gold"
+    }
+    return "darkBlue"
+  }
+  return "darkRed"
+}
 
 const stopButtonClick = () => {
   setRunning(!running)
@@ -91,13 +117,35 @@ const timeSignatureChange = (event, newTimeSignature) => {
 }
 
 const append = () => {
-  rows.push(createData(id, tempMeasure, tempType, tempValue));
+  let newData = createData(id, tempMeasure, tempType, tempValue);
+  rows.push(newData);
   setRows(rows);
   setId(id => id + 1);
+  if(showState == 1) {
+    setLetters(letters.concat([newData]))
+  }
 }
 
+const [showState, setShowState] = useState(0);
 const selectChange = (event) => {
-  setTempType(event.target.value)
+  const value = event.target.value;
+  setTempType(value);
+  switch(value){
+    case "Tempo":
+      setShowState(0)
+      break;
+    case "Rehearsal":
+      setShowState(1)
+      break;
+    case "Time Signature":
+      setShowState(2)
+      break;
+    case "Key":
+      setShowState(3)
+      break;
+    default:
+      break;
+  }
 }
 
 return (
@@ -149,11 +197,12 @@ return (
         onChange={selectChange}
       >
         <MenuItem value="Tempo">Tempo</MenuItem>
+        <MenuItem value="Rehearsal">Rehearsal Letter</MenuItem>
         <MenuItem value="Time Signature">Time Signature</MenuItem>
         <MenuItem value="Key">Key</MenuItem>
       </Select>
     </FormControl>
-    <TextField
+    {showState == 0 && <TextField
       id="outlined-uncontrolled"
       label="Value"
       value={tempValue}
@@ -162,7 +211,16 @@ return (
         if(!isNaN(change) && change >= 0)
           setTempValue(change);
       } }
-    />
+    />}
+    {showState == 1 && <TextField
+      id="outlined-uncontrolled"
+      label="Value"
+      value={tempValue}
+      onChange= {(v) => {
+        let change = v.target.value;
+        setTempValue(change);
+      } }
+    />}
     <br></br>
     <Button 
       onClick={append} 
@@ -195,8 +253,8 @@ return (
     </ToggleButtonGroup>
     <br></br>
     <button className = "CenterButton"
-    style={beat == 1 ? {backgroundColor: "darkBlue"} : {backgroundColor: "darkRed"}}>
-      { beat == 1 ? measure : beat }
+    style={{backgroundColor: buttonColor}}>
+    { buttonText }
     </button>
     <br></br>
     <Button 
