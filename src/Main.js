@@ -20,7 +20,7 @@ export default function App() {
   const [tempValue, setTempValue] = useState(0);
   const downbeat = new Audio(audio1);
   const offbeat = new Audio(audio2);
-  const [rows, setRows] = useState([]);
+  const [tableData, setTableData] = useState([]);
   const [letters, setLetters] = useState([]);
   const [buttonText, setButtonText] = useState("1");
   const [buttonColor, setButtonColor] = useState("darkBlue");
@@ -48,14 +48,14 @@ export default function App() {
       }
     }, (60/bpm)*1000);
 
-    for(let i = 0; i < rows.length; i++) {
-      if(rows[i].measure === measure) {
-        switch(rows[i].type) {
+    for(let i = 0; i < tableData.length; i++) {
+      if(tableData[i].measure === measure) {
+        switch(tableData[i].type) {
         case("Tempo"):
-          setBpm(rows[i].value);
+          setBpm(tableData[i].value);
           break;
         default:
-          console.log("Unsupported Type. Id: " + rows[i].id);
+          console.log("Unsupported Type. Id: " + tableData[i].id);
         }
       } 
     }
@@ -64,7 +64,7 @@ export default function App() {
     setButtonColor(calculateButtonColor)
 
     return () => clearInterval(interval);
-  }, [beat, measure, running, rows]);
+  }, [beat, measure, running, tableData]);
 
 const calculateButtonText = () => {
   if (beat === 1) {
@@ -94,15 +94,15 @@ const reset = () => {
   setRunning(false);
 }
 
-const append = () => {
+const newTableData = () => {
   let newData = {
     id: id,
     measure: tempMeasure,
     type: tempType,
     value: tempValue
   }
-  rows.push(newData);
-  setRows(rows);
+  tableData.push(newData);
+  setTableData(tableData);
   setId(id => id + 1);
   if(tempType === "Rehearsal") {
     setLetters(letters.concat([newData]))
@@ -113,7 +113,7 @@ return (
   <ThemeProvider theme={darkTheme}><CssBaseline>
   <div className="App">
   <div className = "leftColumn">
-    <MeasureTable data={rows}/>
+    <MeasureTable data={tableData}/>
     <TextField
       id="outlined-uncontrolled"
       label="Measure"
@@ -127,7 +127,7 @@ return (
     <TypeChange type={tempType} onChange={(e) => setTempType(e.target.value)}/>
     <ValueBox state={tempType} onChange={(v) => setTempValue(v.target.value)} />
     <br></br>
-    <AddButton onClick = {append}/>
+    <AddButton onClick = {newTableData}/>
     </div>
     <div className="middleColumn"></div>
     <div className="rightColumn">
