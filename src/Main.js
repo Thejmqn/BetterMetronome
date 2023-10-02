@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react'
-import { createTheme, CssBaseline, TextField, ThemeProvider } from '@mui/material'
+import { useState, useEffect } from 'react';
+import { createTheme, CssBaseline, TextField, ThemeProvider } from '@mui/material';
 import MeasureTable from './components/MeasureTable';
 import { TypeChange, ValueBox } from './components/TableMenu';
 import { AddButton, MeasureButtons, ResetButton, StopButton, VolumeButton } from './components/Buttons';
 import './Main.css';
-import audio1 from './audio/downbeat.mp3'
-import audio2 from './audio/offbeat.mp3'
+import audio1 from './audio/downbeat.mp3';
+import audio2 from './audio/offbeat.mp3';
 
-export default function App() {
+export default function Main() {
   const [timeSignature, setTimeSignature] = useState(4)
   const [bpm, setBpm] = useState(112);
   const [beat, setBeat] = useState(1);
@@ -35,15 +35,15 @@ export default function App() {
     const interval = setInterval(() => {
       if(running) {
         if(beat < timeSignature) {
-          setBeat(beat => beat + 1)
+          setBeat(beat => beat + 1);
           if(volume)
-            offbeat.play()
+            offbeat.play();
         } 
         else {
-          setBeat(1)
-          setMeasure(measure => measure + 1)
+          setBeat(1);
+          setMeasure(measure => measure + 1);
           if(volume)
-            downbeat.play()
+            downbeat.play();
         }
       }
     }, (60/bpm)*1000);
@@ -60,8 +60,8 @@ export default function App() {
       } 
     }
 
-    setButtonText(calculateButtonText)
-    setButtonColor(calculateButtonColor)
+    setButtonText(calculateButtonText);
+    setButtonColor(calculateButtonColor);
 
     return () => clearInterval(interval);
   }, [beat, measure, running, tableData]);
@@ -70,22 +70,22 @@ const calculateButtonText = () => {
   if (beat === 1) {
     for(let i = 0; i < letters.length; i++) {
       if(measure === letters[i].measure)
-        return letters[i].value
+        return letters[i].value;
     }
-    return measure
+    return measure;
   }
-  return beat
+  return beat;
 }
 
 const calculateButtonColor = () => {
   if (beat === 1) {
     for(let i = 0; i < letters.length; i++) {
       if(measure === letters[i].measure)
-        return "gold"
+        return "gold";
     }
-    return "darkBlue"
+    return "darkBlue";
   }
-  return "darkRed"
+  return "darkRed";
 }
 
 const reset = () => {
@@ -100,12 +100,12 @@ const newTableData = () => {
     measure: tempMeasure,
     type: tempType,
     value: tempValue
-  }
+  };
   tableData.push(newData);
   setTableData(tableData);
   setId(id => id + 1);
   if(tempType === "Rehearsal") {
-    setLetters(letters.concat([newData]))
+    setLetters(letters.concat([newData]));
   }
 }
 
