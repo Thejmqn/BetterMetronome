@@ -1,4 +1,4 @@
-import { InputLabel, FormControl, MenuItem, Select } from '@mui/material'
+import { InputLabel, FormControl, MenuItem, Select, TextField } from '@mui/material'
 
 export function TypeChange(props) {
   return <FormControl fullWidth>
@@ -9,12 +9,33 @@ export function TypeChange(props) {
       id="demo-simple-select"
       label="Change Type"
       value={props.type}
-      onChange={props.changeCall}
+      onChange={props.onChange}
     >
       <MenuItem value="Tempo">Tempo</MenuItem>
       <MenuItem value="Rehearsal">Rehearsal Letter</MenuItem>
-      <MenuItem value="Time Signature">Time Signature</MenuItem>
+      <MenuItem value="Time">Time Signature</MenuItem>
       <MenuItem value="Key">Key</MenuItem>
     </Select>
   </FormControl>
+}
+
+export function ValueBox(props) {
+  switch (props.state) {
+    case "Tempo":
+      return <TextField
+      id="outlined-uncontrolled"
+      label="New Tempo"
+      value={props.value}
+      onChange={props.onChange}
+    />
+    case "Rehearsal":
+      return <TextField
+      id="outlined-uncontrolled"
+      label="Rehearsal Mark"
+      value={props.value}
+      onChange={props.onChange}
+    />
+    default:
+      console.log(props.state)
+  }
 }

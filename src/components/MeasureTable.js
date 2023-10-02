@@ -1,4 +1,4 @@
-import { TableContainer, Table, TableBody, TableCell, TableHead, TableRow, InputLabel } from '@mui/material'
+import { TableContainer, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
 
 export default function MeasureTable(props) {
     return <TableContainer sx={{height:"50vh"}}>

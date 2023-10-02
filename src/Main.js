@@ -1,13 +1,11 @@
 import { useState, useEffect } from 'react'
-import { Slider, TextField } from '@mui/material'
+import { createTheme, CssBaseline, TextField, ThemeProvider } from '@mui/material'
 import MeasureTable from './components/MeasureTable';
-import { TypeChange } from './components/TableMenu';
-import { AddButton, MeasureButtons, ResetButton, SliderButton, StopButton, VolumeButton } from './components/Buttons';
+import { TypeChange, ValueBox } from './components/TableMenu';
+import { AddButton, MeasureButtons, ResetButton, StopButton, VolumeButton } from './components/Buttons';
 import './Main.css';
 import audio1 from './audio/downbeat.mp3'
 import audio2 from './audio/offbeat.mp3'
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
 
 export default function App() {
   const [timeSignature, setTimeSignature] = useState(4)
@@ -90,10 +88,6 @@ const calculateButtonColor = () => {
   return "darkRed"
 }
 
-function createData(id, measure, type, value) {
-  return { id, measure, type, value };
-}
-
 const reset = () => {
   setBeat(1);
   setMeasure(1);
@@ -101,34 +95,17 @@ const reset = () => {
 }
 
 const append = () => {
-  let newData = createData(id, tempMeasure, tempType, tempValue);
+  let newData = {
+    id: id,
+    measure: tempMeasure,
+    type: tempType,
+    value: tempValue
+  }
   rows.push(newData);
   setRows(rows);
   setId(id => id + 1);
-  if(showState === 1) {
+  if(tempType === "Rehearsal") {
     setLetters(letters.concat([newData]))
-  }
-}
-
-const [showState, setShowState] = useState(0);
-const selectChange = (event) => {
-  const value = event.target.value;
-  setTempType(value);
-  switch(value){
-    case "Tempo":
-      setShowState(0)
-      break;
-    case "Rehearsal":
-      setShowState(1)
-      break;
-    case "Time Signature":
-      setShowState(2)
-      break;
-    case "Key":
-      setShowState(3)
-      break;
-    default:
-      break;
   }
 }
 
@@ -147,33 +124,15 @@ return (
           setTempMeasure(change);
       } }
     />
-    <TypeChange type={tempType} changeCall={selectChange}/>
-    {showState === 0 && <TextField
-      id="outlined-uncontrolled"
-      label="Value"
-      value={tempValue}
-      onChange= {(v) => {
-        let change = v.target.value;
-        if(!isNaN(change) && change >= 0)
-          setTempValue(change);
-      } }
-    />}
-    {showState === 1 && <TextField
-      id="outlined-uncontrolled"
-      label="Value"
-      value={tempValue}
-      onChange= {(v) => {
-        let change = v.target.value;
-        setTempValue(change);
-      } }
-    />}
+    <TypeChange type={tempType} onChange={(e) => setTempType(e.target.value)}/>
+    <ValueBox state={tempType} onChange={(v) => setTempValue(v.target.value)} />
     <br></br>
     <AddButton onClick = {append}/>
     </div>
     <div className="middleColumn"></div>
     <div className="rightColumn">
     <MeasureButtons 
-      onChange={(e, newTimeSignature) => setTimeSignature(newTimeSignature)} 
+      onChange={(_, newTimeSignature) => setTimeSignature(newTimeSignature)} 
       timeSignature={timeSignature} 
     />
     <br></br>
