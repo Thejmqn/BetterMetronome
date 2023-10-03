@@ -40,6 +40,7 @@ export default function Main() {
             offbeat.play();
         } 
         else {
+          console.log(tableData)
           setBeat(1);
           setMeasure(measure => measure + 1);
           if(volume)
@@ -52,10 +53,13 @@ export default function Main() {
       if(tableData[i].measure === measure) {
         switch(tableData[i].type) {
         case("Tempo"):
-          setBpm(tableData[i].value);
+          setBpm(Number(tableData[i].value));
+          break;
+        case("Time"):
+          setTimeSignature(Number(tableData[i].value));
           break;
         default:
-          console.log("Unsupported Type. Id: " + tableData[i].id);
+          break;
         }
       } 
     }
@@ -97,7 +101,7 @@ const reset = () => {
 const newTableData = () => {
   let newData = {
     id: id,
-    measure: tempMeasure,
+    measure: Number(tempMeasure),
     type: tempType,
     value: tempValue
   };

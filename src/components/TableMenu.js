@@ -1,4 +1,5 @@
-import { InputLabel, FormControl, MenuItem, Select, TextField } from '@mui/material'
+import { InputLabel, FormControl, MenuItem, Select, TextField } from '@mui/material';
+import { MeasureButtons } from './Buttons';
 
 export function TypeChange(props) {
   return <FormControl fullWidth>
@@ -35,6 +36,8 @@ export function ValueBox(props) {
       value={props.value}
       onChange={props.onChange}
     />
+    case "Time":
+      return <MeasureButtons timeSignature={props.value} onChange={props.onChange}/>
     default:
       console.log(props.state)
   }
