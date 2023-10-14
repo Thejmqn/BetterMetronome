@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
-import { createTheme, CssBaseline, TextField, ThemeProvider } from '@mui/material';
+import { createTheme, CssBaseline, TextField, ThemeProvider, Checkbox } from '@mui/material';
 import MeasureTable from './components/MeasureTable';
 import { TypeChange, ValueBox } from './components/TableMenu';
 import { AddButton, MeasureButtons, ResetButton, StopButton, VolumeButton } from './components/Buttons';
 import './Main.css';
-import audio1 from './audio/downbeat.mp3';
-import audio2 from './audio/offbeat.mp3';
+import {Howl} from 'howler';
 
 export default function Main() {
   const [timeSignature, setTimeSignature] = useState(4)
@@ -14,16 +13,14 @@ export default function Main() {
   const [measure, setMeasure] = useState(1);
   const [running, setRunning] = useState(false);
   const [volume, setVolume] = useState(true);
-  const [id, setId] = useState(1);
-  const [tempMeasure, setTempMeasure] = useState(1);
-  const [tempType, setTempType] = useState("Tempo");
-  const [tempValue, setTempValue] = useState(0);
-  const downbeat = new Audio(audio1);
-  const offbeat = new Audio(audio2);
+  const [tempData, setTempData] = useState({id: 1, measure: 1, type: "Tempo", value: 0})
   const [tableData, setTableData] = useState([]);
   const [letters, setLetters] = useState([]);
-  const [buttonText, setButtonText] = useState("1");
-  const [buttonColor, setButtonColor] = useState("darkBlue");
+  const [buttonData, setButtonData] = useState({text: "1", color: "darkBlue"});
+
+  const introbeat = new Howl({ src: ["/audio/intro.mp3"]});
+  const downbeat = new Howl({ src: ["/audio/downbeat.mp3"]});
+  const offbeat = new Howl({ src: ["/audio/offbeat.mp3"]});
 
   const darkTheme = createTheme({
     palette: {
@@ -40,7 +37,6 @@ export default function Main() {
             offbeat.play();
         } 
         else {
-          console.log(tableData)
           setBeat(1);
           setMeasure(measure => measure + 1);
           if(volume)
@@ -63,9 +59,7 @@ export default function Main() {
         }
       } 
     }
-
-    setButtonText(calculateButtonText);
-    setButtonColor(calculateButtonColor);
+    setButtonData({text: calculateButtonText(), color: calculateButtonColor()});
 
     return () => clearInterval(interval);
   }, [beat, measure, running, tableData]);
@@ -100,17 +94,21 @@ const reset = () => {
 
 const newTableData = () => {
   let newData = {
-    id: id,
-    measure: Number(tempMeasure),
-    type: tempType,
-    value: tempValue
+    id: tempData.id,
+    measure: Number(tempData.measure),
+    type: tempData.type,
+    value: tempData.value
   };
   tableData.push(newData);
   setTableData(tableData);
-  setId(id => id + 1);
-  if(tempType === "Rehearsal") {
+  setTempData({...tempData, id: tempData.id + 1});
+  if(tempData.type === "Rehearsal") {
     setLetters(letters.concat([newData]));
   }
+}
+
+function play(sound) {
+  new Audio(sound).play();
 }
 
 return (
@@ -121,28 +119,37 @@ return (
     <TextField
       id="outlined-uncontrolled"
       label="Measure"
-      value={tempMeasure}
+      value={tempData.measure}
       onChange={(v) => {
         let change = v.target.value;
         if(!isNaN(change) && change >= 0)
-          setTempMeasure(change);
+          setTempData({...tempData, measure: change});
       } }
     />
-    <TypeChange type={tempType} onChange={(e) => setTempType(e.target.value)}/>
-    <ValueBox state={tempType} onChange={(v) => setTempValue(v.target.value)} />
+    <TypeChange type={tempData.type} 
+      onChange={(v) => setTempData({...tempData, type: v.target.value})}
+    />
+    <ValueBox state={tempData.type}
+      onChange={(v) => setTempData({...tempData, value: v.target.value})}
+    />
     <br></br>
     <AddButton onClick = {newTableData}/>
-    </div>
-    <div className="middleColumn"></div>
-    <div className="rightColumn">
+  </div>
+  <div className="middleColumn">
+  </div>
+  <div className="rightColumn">
     <MeasureButtons 
       onChange={(_, newTimeSignature) => setTimeSignature(newTimeSignature)} 
       timeSignature={timeSignature} 
     />
     <br></br>
-    <button className = "CenterButton"
-    style={{backgroundColor: buttonColor}}>
-    { buttonText }
+    <button className = "centerButton"
+    style={{backgroundColor: buttonData.color}}>
+      { buttonData.text }
+    </button>
+    <br></br>
+    <button className = "keySignature">
+      
     </button>
     <br></br>
     <StopButton onClick={() => setRunning(!running)} running={running} />

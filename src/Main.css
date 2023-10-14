@@ -27,7 +27,7 @@ body {
   width: 57%;
 }
 
-.CenterButton {
+.centerButton {
   width: 50vh;
   height: 50vh;
   border-radius: 50%;
@@ -36,13 +36,11 @@ body {
   border: none; 
 }
 
-.StartStop {
+.keySignature {
   width: 50vh;
-  height: 20vh;
-  border-radius: 5%;
-  color: red;
-  font-size: 10vh;
-  cursor: pointer;
+  height: 10vh;
+  color: black;
+  font-size: 30vh;
   border: none; 
 }
 
