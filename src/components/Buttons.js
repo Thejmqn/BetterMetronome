@@ -5,6 +5,7 @@ import PlayArrow from '@mui/icons-material/PlayArrow';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import BorderClear from '@mui/icons-material/BorderClear';
 
 export function AddButton(props) {
     return <Button 
@@ -39,7 +40,7 @@ export function VolumeButton(props) {
     </Button>
 }
 
-export function ResetButton(props) {
+export function ResetMetronomeButton(props) {
     return <Button 
     onClick={ props.onClick } 
     color={'error'}
@@ -47,6 +48,16 @@ export function ResetButton(props) {
     startIcon={ <RestartAltIcon /> }>
     { "Reset" }
   </Button>
+}
+
+export function ResetTableButton(props) {
+  return <Button 
+  onClick={ props.onClick } 
+  color={'error'}
+  size={'large'}
+  startIcon={ <BorderClear /> }>
+  { "Clear Table" }
+</Button>
 }
 
 export function MeasureButtons(props) {

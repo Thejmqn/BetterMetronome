@@ -2,9 +2,12 @@ import { useState, useEffect } from 'react';
 import { createTheme, CssBaseline, TextField, ThemeProvider, Checkbox } from '@mui/material';
 import MeasureTable from './components/MeasureTable';
 import { TypeChange, ValueBox } from './components/TableMenu';
-import { AddButton, MeasureButtons, ResetButton, StopButton, VolumeButton } from './components/Buttons';
+import { AddButton, MeasureButtons, ResetTableButton } from './components/Buttons';
+import { ResetMetronomeButton, StopButton, VolumeButton } from './components/Buttons';
 import './Main.css';
 import {Howl} from 'howler';
+import Data from './backend/Data';
+import UploadButton from './backend/UploadButton';
 
 export default function Main() {
   const [timeSignature, setTimeSignature] = useState(4)
@@ -107,10 +110,6 @@ const newTableData = () => {
   }
 }
 
-function play(sound) {
-  new Audio(sound).play();
-}
-
 return (
   <ThemeProvider theme={darkTheme}><CssBaseline>
   <div className="App">
@@ -134,8 +133,12 @@ return (
     />
     <br></br>
     <AddButton onClick = {newTableData}/>
+    <br></br>
+    <ResetTableButton onClick = {() => setTableData([])} />
+    <UploadButton tableData={tableData}/>
   </div>
   <div className="middleColumn">
+    <Data />
   </div>
   <div className="rightColumn">
     <MeasureButtons 
@@ -148,14 +151,20 @@ return (
       { buttonData.text }
     </button>
     <br></br>
-    <button className = "keySignature">
-      
+    <button>
+      <img src="Sharp.svg" />
+      <img src="Sharp.svg" />
+      <img src="Sharp.svg" />
+      <img src="Sharp.svg" />
+      <img src="Sharp.svg" />
+      <img src="Sharp.svg" />
     </button>
     <br></br>
     <StopButton onClick={() => setRunning(!running)} running={running} />
     <VolumeButton onClick={() => setVolume(!volume)} volume={volume} />
     <br></br>
-    <ResetButton onClick={reset} />
+    <ResetMetronomeButton onClick={reset} />
+    <Data />
   </div>
   </div>
   </CssBaseline></ThemeProvider>
