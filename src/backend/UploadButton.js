@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const sendTableData = async (tableData) => {
-    const tableHost = "http://localhost:8080/table";
+    const tableHost = "http://localhost:8080/songs";
     try {
         await axios.post(tableHost, tableData);
     } catch (err) {
