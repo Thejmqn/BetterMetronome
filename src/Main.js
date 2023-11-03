@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { createTheme, CssBaseline, TextField, ThemeProvider, Checkbox } from '@mui/material';
+import { createTheme, CssBaseline, TextField, ThemeProvider } from '@mui/material';
 import MeasureTable from './components/MeasureTable';
 import { TypeChange, ValueBox } from './components/TableMenu';
 import { AddButton, MeasureButtons, ResetTableButton } from './components/Buttons';
@@ -7,7 +7,7 @@ import { ResetMetronomeButton, StopButton, VolumeButton } from './components/But
 import './Main.css';
 import {Howl} from 'howler';
 import Data from './backend/Data';
-import UploadButton from './backend/UploadButton';
+import { UploadButton } from './backend/UploadButton';
 
 export default function Main() {
   const [timeSignature, setTimeSignature] = useState(4)
@@ -135,6 +135,7 @@ return (
     <AddButton onClick = {newTableData}/>
     <br></br>
     <ResetTableButton onClick = {() => setTableData([])} />
+    <br></br>
     <UploadButton tableData={tableData}/>
   </div>
   <div className="middleColumn">
@@ -149,15 +150,6 @@ return (
     <button className = "centerButton"
     style={{backgroundColor: buttonData.color}}>
       { buttonData.text }
-    </button>
-    <br></br>
-    <button>
-      <img src="Sharp.svg" />
-      <img src="Sharp.svg" />
-      <img src="Sharp.svg" />
-      <img src="Sharp.svg" />
-      <img src="Sharp.svg" />
-      <img src="Sharp.svg" />
     </button>
     <br></br>
     <StopButton onClick={() => setRunning(!running)} running={running} />

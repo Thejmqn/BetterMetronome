@@ -18,6 +18,6 @@ export default function Data() {
     }, []);
 
     return (
-        <p>{data.map(point=>(point.info))}</p>
+        <p>{data.length > 0 && data.map(point=>(point.info))}</p>
     );
 }
