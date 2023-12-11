@@ -41,29 +41,20 @@ app.post("/table", (req, res) => {
 
 app.post("/uploadsong", (req, res) => {
     console.log(req);
-    const song = req.body;
+    const song = req.body.data;
     const q = "INSERT INTO " + songTable + 
     " (`title`,  `description`, `user_id`, `num_measures`, `initial_tempo`, `initial_time_signature`, `initial_key`)" +
     "VALUES (?, ?, ?, ?, ?, ?, ?)";
-    const tableData = {
-        title: "testSong",
-        description: "bruh",
-        user_id: 1,
-        num_measures: song[0].measure,
-        initial_tempo: 123,
-        initial_time_signature: 4,
-        initial_key: 0
-    }
-    const tableData2 = [
-        "testSong",
-        "bruh",
-        1,
-        song[0].measure,
-        123,
-        4,
-        0
+    const tableData = [
+        req.body.title, 
+        req.body.description, 
+        1, 
+        song[0].measure, 
+        req.body.tempo,
+        req.body.timeSignature,
+        0,
     ]
-    db.query(q, tableData2, (err, data) => {
+    db.query(q, tableData, (err, data) => {
         if (err) {
             console.log(err);
             res.send({ success: false, message: 'query error', error: err });

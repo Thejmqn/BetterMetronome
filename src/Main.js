@@ -136,7 +136,7 @@ return (
     <br></br>
     <ResetTableButton onClick = {() => setTableData([])} />
     <br></br>
-    <UploadButton tableData={tableData}/>
+    <UploadButton tableData={tableData} tempo={bpm} timeSignature={timeSignature}/>
   </div>
   <div className="middleColumn">
     <Data />

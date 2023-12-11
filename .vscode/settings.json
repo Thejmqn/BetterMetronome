@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "undefined/subscriptions/8453bd78-d04a-4f49-ac14-44c2959211f9/resourceGroups/director-metronome/providers/Microsoft.Web/sites/director-metronome",
+    "appService.deploySubpath": "."
+}
