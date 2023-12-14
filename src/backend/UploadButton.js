@@ -5,7 +5,8 @@ import Upload from '@mui/icons-material/Upload';
 import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@mui/material';
 
 const sendTableData = async (tableData) => {
-    const tableHost = "http://localhost:8080/uploadsong";
+    console.log(tableData)
+    const tableHost = "localho.st:8080/uploadsong";
     try {
         await axios.post(tableHost, tableData);
     } catch (err) {

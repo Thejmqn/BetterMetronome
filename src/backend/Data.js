@@ -10,6 +10,7 @@ export default function Data() {
                 const host = "http://localhost:8080/data";
                 const res = await axios.get(host);
                 setData(res.data);
+                console.log(res.data)
             } catch (err) {
                 console.log(err);
             }

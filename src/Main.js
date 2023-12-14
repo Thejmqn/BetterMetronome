@@ -139,7 +139,6 @@ return (
     <UploadButton tableData={tableData} tempo={bpm} timeSignature={timeSignature}/>
   </div>
   <div className="middleColumn">
-    <Data />
   </div>
   <div className="rightColumn">
     <MeasureButtons 
@@ -156,7 +155,6 @@ return (
     <VolumeButton onClick={() => setVolume(!volume)} volume={volume} />
     <br></br>
     <ResetMetronomeButton onClick={reset} />
-    <Data />
   </div>
   </div>
   </CssBaseline></ThemeProvider>
