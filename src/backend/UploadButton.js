@@ -6,7 +6,7 @@ import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} fr
 
 const sendTableData = async (tableData) => {
     console.log(tableData)
-    const tableHost = "localho.st:8080/uploadsong";
+    const tableHost = "http://localhost:8080/uploadsong";
     try {
         await axios.post(tableHost, tableData);
     } catch (err) {
