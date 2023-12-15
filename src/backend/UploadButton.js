@@ -6,7 +6,7 @@ import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} fr
 
 const sendTableData = async (tableData) => {
     console.log(tableData)
-    const tableHost = "http://localhost:8080/uploadsong";
+    const tableHost = "https://director-metronome-backend.azurewebsites.net/uploadsong";
     try {
         await axios.post(tableHost, tableData);
     } catch (err) {
