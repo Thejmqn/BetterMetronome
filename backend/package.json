@@ -1,21 +1,23 @@
 {
-  "name": "backend",
+  "name": "metronome_backend",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js",
-    "build": ""
+    "start": "nodemon index"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "config": "^3.3.9",
     "cors": "^2.8.5",
     "express": "^4.18.2",
+    "msnodesqlv8": "^4.1.2",
+    "mssql": "^10.0.1",
     "mysql": "^2.18.1",
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.0.2",
+    "tedious": "^16.6.1"
   }
 }
